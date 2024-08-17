@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "holdeasyplace",
+  "name": "Hold Easy Place",
+  "version": "${version}",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "shane0411"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/holdeasyplace/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.shane.HoldEasyPlace.HoldEasyPlace"
+    ]
+  },
+  "mixins": [
+    "holdeasyplace.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.0",
+    "minecraft": "~1.20.1",
+    "malilib": ">=0.15.0",
+    "litematica": ">=0.15.0"
+  }
+}

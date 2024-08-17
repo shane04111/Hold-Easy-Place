@@ -1,0 +1,10 @@
+{
+  "holdeasyplace.generic.holdEasyPlace": "保持簡單放置模式",
+  "holdeasyplace.generic.holdEasyPlace.comment": "持續觸發簡單放置，會隱藏簡單放置失敗提示，需開啟簡單放置模式",
+  "holdeasyplace.generic.disableHoldEasyPlaceFailTip": "禁用保持簡單放置時的失敗提示",
+  "holdeasyplace.generic.disableHoldEasyPlaceFailTip.comment": "當 保持簡單放置模式 和 禁用保持簡單放置時的失敗提示 為 true 時，簡單放置失敗提示將被停用。",
+  "holdeasyplace.generic.alwaysDisableFailTip": "總是禁用失敗提示",
+  "holdeasyplace.generic.alwaysDisableFailTip.comment": "當這個選項啟用時，無論任何情況，所有的操作失敗提示都將被停用。\n這可以用於避免在使用簡單放置功能時出現任何與操作失敗的提示。",
+  "holdeasyplace.hotkey.holdEasyPlaceToggle": "切換持續簡單放置",
+  "holdeasyplace.hotkey.holdEasyPlaceToggle.comment": "允許玩家快速切換持續簡單放置模式"
+}

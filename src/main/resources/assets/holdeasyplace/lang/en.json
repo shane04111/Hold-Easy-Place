@@ -1,0 +1,10 @@
+{
+  "holdeasyplace.generic.holdEasyPlace": "Hold Easy Place Mode",
+  "holdeasyplace.generic.holdEasyPlace.comment": "Continuously triggers easy place, hides easy place failure tips, requires enabling easy place mode.",
+  "holdeasyplace.generic.disableHoldEasyPlaceFailTip": "Disable Hold Easy Place Failure Tip",
+  "holdeasyplace.generic.disableHoldEasyPlaceFailTip.comment": "When both Hold Easy Place Mode and Disable Hold Easy Place Failure Tip are set to true, easy place failure tips will be disabled.",
+  "holdeasyplace.generic.alwaysDisableFailTip": "Always Disable Failure Tips",
+  "holdeasyplace.generic.alwaysDisableFailTip.comment": "When this option is enabled, all failure notifications will be disabled in all situations.\nThis can be used to prevent any alerts related to operation failures when using the easy place feature.",
+  "holdeasyplace.hotkey.holdEasyPlaceToggle": "Toggle Continuous Easy Place",
+  "holdeasyplace.hotkey.holdEasyPlaceToggle.comment": "Allows players to quickly toggle the continuous easy place mode."
+}
