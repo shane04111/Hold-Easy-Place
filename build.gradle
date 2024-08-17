@@ -1,79 +1,62 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
     id 'maven-publish'
+    id 'com.github.hierynomus.license' version '0.16.1' apply false
+    id 'fabric-loom' version '1.2-SNAPSHOT' apply false
+    id 'com.replaymod.preprocess' version 'ce1aeb2b'
+    id 'me.fallenbreath.yamlang' version '1.4.0' apply false
 }
 
-version = project.mod_version
-group = project.maven_group
+preprocess {
+    def mc114 = createNode('1.14.4', 1_14_04, '')
+    def mc115 = createNode('1.15.2', 1_15_02, '')
+    def mc116 = createNode('1.16.5', 1_16_05, '')
+    def mc117 = createNode('1.17.1', 1_17_01, '')
+    def mc118 = createNode('1.18.2', 1_18_02, '')
+    def mc1194 = createNode('1.19.4', 1_19_04, '')
+    def mc1201 = createNode('1.20.1', 1_20_01, '')
+    def mc1202 = createNode('1.20.2', 1_20_02, '')
 
-base {
-    archivesName = project.mod_name + "-" + project.minecraft_version
+    mc115.link(mc114, file('versions/mapping-1.15-1.14.txt'))
+    mc115.link(mc116, file('versions/mapping-1.15-1.16.txt'))
+    mc116.link(mc117, file('versions/mapping-1.16-1.17.txt'))
+    mc117.link(mc118, file('versions/mapping-1.17-1.18.txt'))
+    mc118.link(mc1194, file('versions/mapping-1.18-1.19.txt'))
+    mc1194.link(mc1201, file('versions/mapping-1.19-1.20.1.txt'))
+    mc1201.link(mc1202, file('versions/mapping-1.20.1-1.20.2.txt'))
 }
 
-repositories {
-    maven { url 'https://masa.dy.fi/maven' }
-    maven { url "https://jitpack.io" }
-    maven { url "https://www.cursemaven.com" }
-}
-
-dependencies {
-    // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
-    modImplementation "curse.maven:litematica-308892:${project.litematica_file_id}"
-}
-
-processResources {
-    inputs.property "version", project.version
-    inputs.property "id", project.mod_id
-    inputs.property "name", project.mod_name
-    inputs.property "version", project.version
-    inputs.property "minecraft_dependency", project.minecraft_dependency
-    inputs.property "malilib_dependency", project.malilib_dependency
-    inputs.property "litematica_dependency", project.litematica_dependency
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-        expand "id": project.mod_id
-        expand "name": project.mod_name
-        expand "minecraft_dependency": project.minecraft_dependency
-        expand "malilib_dependency": project.malilib_dependency
-        expand "litematica_dependency": project.litematica_dependency
+tasks.register('buildAndGather') {
+    subprojects {
+        dependsOn project.tasks.named('build').get()
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
-}
-
-java {
-    withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+    doFirst {
+        println 'Gathering builds'
+        def buildLibs = {
+            p -> p.buildDir.toPath().resolve('libs')
+        }
+        delete fileTree(buildLibs(rootProject)) {
+            include '*'
+        }
+        subprojects {
+            copy {
+                from(buildLibs(project)) {
+                    include '*.jar'
+                    exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
+                }
+                into buildLibs(rootProject)
+                duplicatesStrategy DuplicatesStrategy.INCLUDE
+            }
         }
     }
+}
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+tasks.register('cleanPreprocessSources') {
+    doFirst {
+        subprojects {
+            def path = project.projectDir.toPath().resolve('build/preprocessed')
+            if (path.toFile().isDirectory()) {
+                path.toFile().deleteDir()
+            }
+        }
     }
 }
