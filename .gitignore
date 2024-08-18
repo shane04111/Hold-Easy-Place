@@ -43,3 +43,4 @@ replay_*.log
 *.py
 lib/
 *.bat
+!gradlew.bat
