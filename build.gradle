@@ -3,7 +3,6 @@ plugins {
     id 'com.github.hierynomus.license' version '0.16.1' apply false
     id 'fabric-loom' version '1.2-SNAPSHOT' apply false
     id 'com.replaymod.preprocess' version 'ce1aeb2b'
-    id 'me.fallenbreath.yamlang' version '1.4.0' apply false
 }
 
 preprocess {
@@ -15,40 +14,18 @@ preprocess {
     def mc1194 = createNode('1.19.4', 1_19_04, '')
     def mc1201 = createNode('1.20.1', 1_20_01, '')
     def mc1202 = createNode('1.20.2', 1_20_02, '')
+    def mc1204 = createNode('1.20.4', 1_20_04, '')
 
-    mc115.link(mc114, file('versions/mapping-1.15-1.14.txt'))
-    mc115.link(mc116, file('versions/mapping-1.15-1.16.txt'))
-    mc116.link(mc117, file('versions/mapping-1.16-1.17.txt'))
-    mc117.link(mc118, file('versions/mapping-1.17-1.18.txt'))
-    mc118.link(mc1194, file('versions/mapping-1.18-1.19.txt'))
-    mc1194.link(mc1201, file('versions/mapping-1.19-1.20.1.txt'))
-    mc1201.link(mc1202, file('versions/mapping-1.20.1-1.20.2.txt'))
+    mc115.link(mc114, null)
+    mc115.link(mc116, null)
+    mc116.link(mc117, null)
+    mc117.link(mc118, null)
+    mc118.link(mc1194, null)
+    mc1194.link(mc1201, null)
+    mc1201.link(mc1202, null)
+    mc1202.link(mc1204, null)
 }
 
-tasks.register('buildAndGather') {
-    subprojects {
-        dependsOn project.tasks.named('build').get()
-    }
-    doFirst {
-        println 'Gathering builds'
-        def buildLibs = {
-            p -> p.buildDir.toPath().resolve('libs')
-        }
-        delete fileTree(buildLibs(rootProject)) {
-            include '*'
-        }
-        subprojects {
-            copy {
-                from(buildLibs(project)) {
-                    include '*.jar'
-                    exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
-                }
-                into buildLibs(rootProject)
-                duplicatesStrategy DuplicatesStrategy.INCLUDE
-            }
-        }
-    }
-}
 
 tasks.register('cleanPreprocessSources') {
     doFirst {

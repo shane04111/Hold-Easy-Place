@@ -42,3 +42,4 @@ replay_*.log
 .git/
 *.py
 lib/
+*.bat

@@ -8,8 +8,9 @@
     "shane0411"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "homepage": "${mod_homepage}",
+    "issues": "${mod_sources}/issues",
+    "sources": "${mod_sources}"
   },
   "license": "MIT",
   "icon": "assets/holdeasyplace/icon.png",
