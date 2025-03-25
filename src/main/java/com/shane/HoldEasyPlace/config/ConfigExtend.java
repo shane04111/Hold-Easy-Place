@@ -41,7 +41,12 @@ public class ConfigExtend {
         );
 
         private static ConfigBoolean InitialBoolean(String name, boolean defaultValue) {
-            return new ConfigBoolean("holdeasyplace.generic." + name, defaultValue, "holdeasyplace.generic." + name + ".comment");
+            //#if MC<12100
+            final String base_name = "holdeasyplace.generic.";
+            return new ConfigBoolean(base_name + "name." + name, defaultValue, base_name + "comment." + name);
+            //#else
+            //$$ return new ConfigBoolean(name, defaultValue).apply("holdeasyplace.generic");
+            //#endif
         }
     }
 }

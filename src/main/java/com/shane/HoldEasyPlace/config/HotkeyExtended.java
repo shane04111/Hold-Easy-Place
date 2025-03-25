@@ -37,6 +37,12 @@ public class HotkeyExtended {
     );
 
     private static ConfigHotkey InitialHotkey(String hotkey) {
-        return new ConfigHotkey("holdeasyplace.hotkey." + hotkey, "", "holdeasyplace.hotkey." + hotkey + ".comment");
+        // return new ConfigHotkey("holdeasyplace.hotkey." + hotkey, "", "holdeasyplace.hotkey." + hotkey + ".comment");
+        //#if MC<12100
+        final String base_name = "holdeasyplace.hotkey.";
+        return new ConfigHotkey(base_name + "name." + hotkey, "", base_name + "comment." + hotkey);
+        //#else
+        //$$ return new ConfigHotkey(hotkey, "").apply("holdeasyplace.hotkey");
+        //#endif
     }
 }
