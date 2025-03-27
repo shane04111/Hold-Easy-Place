@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "holdeasyplace",
-  "name": "Hold Easy Place",
+  "id": "${id}",
+  "name": "${name}",
   "version": "${version}",
-  "description": "Hold Easy Place",
+  "description": "${description}",
   "authors": [
     "shane0411"
   ],
