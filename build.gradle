@@ -37,15 +37,18 @@ preprocess {
 }
 
 tasks.register('buildAndGather') {
-    subprojects {
-        dependsOn project.tasks.named('build').get()
-    }
+    subprojects { dependsOn project.tasks.named('build').get() }
     doFirst {
         println 'Gathering builds'
-        def buildLibs = {
-            p -> p.buildDir.toPath().resolve('libs')
+        def buildLibs = { p -> p.buildDir.toPath().resolve('libs') }
+        def versionDir = buildLibs(rootProject).resolve(rootProject.mod_version)
+        def devDir = versionDir.resolve('dev')
+        versionDir.toFile().mkdirs()
+        devDir.toFile().mkdirs()
+        delete fileTree(versionDir) {
+            include '*'
         }
-        delete fileTree(buildLibs(rootProject)) {
+        delete fileTree(devDir) {
             include '*'
         }
         subprojects {
@@ -54,8 +57,30 @@ tasks.register('buildAndGather') {
                     include '*.jar'
                     exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
                 }
-                into buildLibs(rootProject)
+                into versionDir
                 duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            }
+            copy {
+                from(buildLibs(project)) {
+                    include '*-dev.jar', '*-sources.jar', '*-shadow.jar'
+                }
+                into devDir
+                duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            }
+            println 'clear builds'
+            delete fileTree(buildLibs(project)) {
+                include '*'
+            }
+        }
+    }
+}
+
+tasks.register('cleanLibsJars') {
+    doFirst {
+        def buildLibs = { p -> p.buildDir.toPath().resolve('libs') }
+        subprojects {
+            delete fileTree(buildLibs(project)) {
+                include '*'
             }
         }
     }
