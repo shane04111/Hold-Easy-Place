@@ -5,6 +5,8 @@
   "holdeasyplace.generic.comment.disableHoldEasyPlaceFailTip": "When both Hold Easy Place Mode and Disable Hold Easy Place Failure Tip are set to true, easy place failure tips will be disabled.",
   "holdeasyplace.generic.name.alwaysDisableFailTip": "Always Disable Failure Tips",
   "holdeasyplace.generic.comment.alwaysDisableFailTip": "When this option is enabled, all failure notifications will be disabled in all situations.\nThis can be used to prevent any alerts related to operation failures when using the easy place feature.",
+  "holdeasyplace.generic.name.cacheTime": "Same Position Placement Interval",
+  "holdeasyplace.generic.comment.cacheTime": "After using easy place mode to place a block in the same Position, the interval (in milliseconds) before it can be placed again.",
   "holdeasyplace.hotkey.name.holdEasyPlaceToggle": "Toggle Continuous Easy Place",
   "holdeasyplace.hotkey.comment.holdEasyPlaceToggle": "Allows players to quickly toggle the continuous easy place mode."
 }

@@ -25,20 +25,28 @@
 package com.shane.HoldEasyPlace.mixin;
 
 import com.shane.HoldEasyPlace.config.ConfigExtend;
-import fi.dy.masa.litematica.config.Configs;
-import fi.dy.masa.litematica.data.DataManager;
-import fi.dy.masa.litematica.tool.ToolMode;
 import fi.dy.masa.litematica.util.WorldUtils;
 import fi.dy.masa.malilib.gui.Message;
 import fi.dy.masa.malilib.util.InfoUtils;
-import fi.dy.masa.malilib.util.MessageOutputType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//#if MC>=11800
+import fi.dy.masa.malilib.util.MessageOutputType;
+import fi.dy.masa.litematica.data.DataManager;
+import fi.dy.masa.litematica.config.Configs;
+import fi.dy.masa.litematica.tool.ToolMode;
+//#endif
+
+import java.lang.reflect.Constructor;
+import java.util.List;
 
 @Mixin(value = WorldUtils.class, remap = false)
 public class MixinWorldUtils {
@@ -47,8 +55,26 @@ public class MixinWorldUtils {
         return null;
     }
 
+    @Final
+    @Shadow
+    private static List<WorldUtils.PositionCache> EASY_PLACE_POSITIONS;
+
+    @Inject(method = "cacheEasyPlacePosition", at = @At("HEAD"), cancellable = true)
+    private static void onCacheEasyPlacePosition(BlockPos pos, CallbackInfo ci) {
+        try {
+            Constructor<WorldUtils.PositionCache> constructor = WorldUtils.PositionCache.class.getDeclaredConstructor(BlockPos.class, long.class, long.class);
+            constructor.setAccessible(true);
+            EASY_PLACE_POSITIONS.add(constructor.newInstance(pos, System.nanoTime(), 1000000L * (long) ConfigExtend.Generic.CACHE_TIME.getIntegerValue()));
+            ci.cancel();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create PositionCache instance", e);
+        }
+    }
+
+
     @Inject(method = "handleEasyPlace", at = @At(value = "HEAD"), cancellable = true)
     private static void onHandleEasyPlace(MinecraftClient mc, CallbackInfoReturnable<Boolean> cir) {
+        //#if MC>=11800
         if (Configs.Generic.EASY_PLACE_MODE.getBooleanValue() && DataManager.getToolMode() != ToolMode.REBUILD) {
             ActionResult result = doEasyPlaceAction(mc);
             boolean checkTip = (ConfigExtend.Generic.DISABLE_HOLD_EASY_PLACE_FAIL_TIP.getBooleanValue() && ConfigExtend.Generic.HOLD_EASY_PLACE.getBooleanValue()) || ConfigExtend.Generic.ALWAYS_DISABLE_FAIL_TIP.getBooleanValue();
@@ -67,5 +93,15 @@ public class MixinWorldUtils {
             cir.setReturnValue(false);
         }
         cir.cancel();
+        //#else
+        //$$ ActionResult result = doEasyPlaceAction(mc);
+        //$$ boolean checkTip = (ConfigExtend.Generic.DISABLE_HOLD_EASY_PLACE_FAIL_TIP.getBooleanValue() && ConfigExtend.Generic.HOLD_EASY_PLACE.getBooleanValue()) || ConfigExtend.Generic.ALWAYS_DISABLE_FAIL_TIP.getBooleanValue();
+        //$$ if (!checkTip && result == ActionResult.FAIL) {
+        //$$     InfoUtils.showGuiOrInGameMessage(Message.MessageType.WARNING, "litematica.message.easy_place_fail");
+        //$$     cir.setReturnValue(true);
+        //$$ } else {
+        //$$     cir.setReturnValue(result != ActionResult.PASS);
+        //$$ }
+        //#endif
     }
 }

@@ -37,6 +37,7 @@ preprocess {
 }
 
 tasks.register('buildAndGather') {
+    dependsOn tasks.cleanLibsJars, tasks.cleanPreprocessSources
     subprojects { dependsOn project.tasks.named('build').get() }
     doFirst {
         println 'Gathering builds'
@@ -45,12 +46,8 @@ tasks.register('buildAndGather') {
         def devDir = versionDir.resolve('dev')
         versionDir.toFile().mkdirs()
         devDir.toFile().mkdirs()
-        delete fileTree(versionDir) {
-            include '*'
-        }
-        delete fileTree(devDir) {
-            include '*'
-        }
+        delete fileTree(versionDir) { include '*' }
+        delete fileTree(devDir) { include '*' }
         subprojects {
             copy {
                 from(buildLibs(project)) {
@@ -66,10 +63,6 @@ tasks.register('buildAndGather') {
                 }
                 into devDir
                 duplicatesStrategy = DuplicatesStrategy.INCLUDE
-            }
-            println 'clear builds'
-            delete fileTree(buildLibs(project)) {
-                include '*'
             }
         }
     }

@@ -170,6 +170,12 @@ java {
     withSourcesJar()
 }
 
+jar {
+    from("../../LICENSE") {
+        rename { "${it}" }
+    }
+}
+
 // https://github.com/hierynomus/license-gradle-plugin
 license {
     // use "gradle licenseFormat" to apply license headers

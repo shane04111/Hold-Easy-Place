@@ -27,17 +27,19 @@ package com.shane.HoldEasyPlace.config;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
+import fi.dy.masa.malilib.config.options.ConfigInteger;
 
 public class ConfigExtend {
     public static class Generic {
         public static final ConfigBoolean HOLD_EASY_PLACE = InitialBoolean("holdEasyPlace", false);
         public static final ConfigBoolean DISABLE_HOLD_EASY_PLACE_FAIL_TIP = InitialBoolean("disableHoldEasyPlaceFailTip", true);
         public static final ConfigBoolean ALWAYS_DISABLE_FAIL_TIP = InitialBoolean("alwaysDisableFailTip", false);
-
+        public static final ConfigInteger CACHE_TIME = InitialInteger("cacheTime", 2000, 10, 10000);
         public static final ImmutableList<IConfigBase> EXTENDED_OPTIONS = ImmutableList.of(
                 HOLD_EASY_PLACE,
                 DISABLE_HOLD_EASY_PLACE_FAIL_TIP,
-                ALWAYS_DISABLE_FAIL_TIP
+                ALWAYS_DISABLE_FAIL_TIP,
+                CACHE_TIME
         );
 
         private static ConfigBoolean InitialBoolean(String name, boolean defaultValue) {
@@ -46,6 +48,14 @@ public class ConfigExtend {
             return new ConfigBoolean(base_name + "name." + name, defaultValue, base_name + "comment." + name);
             //#else
             //$$ return new ConfigBoolean(name, defaultValue).apply("holdeasyplace.generic");
+            //#endif
+        }
+        private static ConfigInteger InitialInteger(String name, int defaultValue, int min, int max) {
+            //#if MC<12100
+            final String base_name = "holdeasyplace.generic.";
+            return new ConfigInteger(base_name + "name." + name, defaultValue, min, max, base_name + "comment." + name);
+            //#else
+            //$$ return new ConfigInteger(name, defaultValue, min, max).apply("holdeasyplace.generic");
             //#endif
         }
     }
