@@ -97,7 +97,7 @@ loom {
 }
 
 tasks.register("runProductionClient", JavaExec) {
-    dependsOn(tasks.remapJar)
+//    dependsOn(tasks.remapJar)
     classpath.from(configurations.productionRuntimeClient)
     mainClass.set("net.fabricmc.loader.impl.launch.knot.KnotClient")
     workingDir(file("run/client"))
@@ -112,7 +112,7 @@ tasks.register("runProductionClient", JavaExec) {
                 "--height", "1080"
         )
         jvmArgs("-Dmixin.debug.export=true")
-        jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}")
+//        jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}")
 
 
         if (Platform.CURRENT.operatingSystem.isMacOS()) {

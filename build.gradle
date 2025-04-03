@@ -37,7 +37,6 @@ preprocess {
 }
 
 tasks.register('buildAndGather') {
-    dependsOn tasks.cleanLibsJars, tasks.cleanPreprocessSources
     subprojects { dependsOn project.tasks.named('build').get() }
     doFirst {
         println 'Gathering builds'
@@ -66,6 +65,10 @@ tasks.register('buildAndGather') {
             }
         }
     }
+}
+
+tasks.register('cleanBuilds') {
+    dependsOn tasks.cleanLibsJars, tasks.cleanPreprocessSources
 }
 
 tasks.register('cleanLibsJars') {
