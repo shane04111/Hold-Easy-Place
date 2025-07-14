@@ -8,5 +8,6 @@
   "holdeasyplace.generic.name.cacheTime": "Same Position Placement Interval",
   "holdeasyplace.generic.comment.cacheTime": "After using easy place mode to place a block in the same Position, the interval (in milliseconds) before it can be placed again.",
   "holdeasyplace.hotkey.name.holdEasyPlaceToggle": "Toggle Continuous Easy Place",
-  "holdeasyplace.hotkey.comment.holdEasyPlaceToggle": "Allows players to quickly toggle the continuous easy place mode."
+  "holdeasyplace.hotkey.comment.holdEasyPlaceToggle": "Allows players to quickly toggle the continuous easy place mode.",
+  "holdeasyplace.gui.button.openFolder": "Open Schematics Folder"
 }

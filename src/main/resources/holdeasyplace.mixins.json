@@ -3,6 +3,7 @@
   "package": "com.shane.HoldEasyPlace.mixin",
   "compatibilityLevel": "{{COMPATIBILITY_LEVEL}}",
   "client": [
+    "MixinGuiMainMenu",
     "MixinMinecraftClient"
   ],
   "injectors": {

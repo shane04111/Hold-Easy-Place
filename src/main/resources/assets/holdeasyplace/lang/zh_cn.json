@@ -8,5 +8,6 @@
   "holdeasyplace.generic.name.cacheTime": "同位置放置间隔",
   "holdeasyplace.generic.comment.cacheTime": "简单放置模式放置方块后，同位置再次放置的间隔(以毫秒为单位)。",
   "holdeasyplace.hotkey.name.holdEasyPlaceToggle": "切换持续简单放置",
-  "holdeasyplace.hotkey.comment.holdEasyPlaceToggle": "允许玩家快速切换持续简单放置模式"
+  "holdeasyplace.hotkey.comment.holdEasyPlaceToggle": "允许玩家快速切换持续简单放置模式",
+  "holdeasyplace.gui.button.openFolder": "打开原理图文件夹"
 }
